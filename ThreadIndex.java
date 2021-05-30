@@ -4,17 +4,18 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
 public class ThreadIndex extends Thread {
-    private ConcurrentHashMap<String, LinkedList<Integer>> index;
+    private ConcurrentHashMap<String, CopyOnWriteArrayList<Integer>> index;
     private int start;
     private int end;
     private File ROOT;
 
-    public ThreadIndex(ConcurrentHashMap<String, LinkedList<Integer>> index, int start, int end, final File ROOT) {
+    public ThreadIndex(ConcurrentHashMap<String, CopyOnWriteArrayList<Integer>> index, int start, int end, final File ROOT) {
         this.index = index;
         this.start = start;
         this.end = end;
@@ -65,9 +66,9 @@ public class ThreadIndex extends Thread {
 
             for (int j = 0; j < uniqueTerms.size(); j++) {
                 String word = uniqueTerms.get(j);
-                final int doc = docId;
-                index.computeIfPresent(word,(key , val)  -> val.add(doc)? val : val);
-                index.computeIfAbsent(word,(key , val) -> (LinkedList<Integer>) (Arrays.asList(doc)));
+                index.putIfAbsent(word, new CopyOnWriteArrayList<Integer>());
+                CopyOnWriteArrayList<Integer> idx = index.get(word);
+                idx.addIfAbsent(docId);;
 
 
             }

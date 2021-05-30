@@ -1,9 +1,11 @@
 import java.io.File;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Index {
-    final static int THREAD_AMOUNT = 1;
+    final static int THREAD_AMOUNT = 5;
     static final File SOURCE_ROOT_FILE = new File("C:\\Users\\Alex Shpigun\\IdeaProjects\\untitled3\\src\\Data");
     static final int FILES_AMOUNT = SOURCE_ROOT_FILE.list().length;
     static final int PORT = 8000;
@@ -19,7 +21,7 @@ public class Index {
 
     public static void main(String[] args) {
         ThreadIndex[] indexArr = new ThreadIndex[THREAD_AMOUNT];
-        ConcurrentHashMap<String, LinkedList<Integer>> index = new ConcurrentHashMap<String, LinkedList<Integer>>(10, 0.75f, THREAD_AMOUNT);
+        ConcurrentHashMap<String, CopyOnWriteArrayList<Integer>> index = new ConcurrentHashMap<String, CopyOnWriteArrayList<Integer>>(10, 0.75f, THREAD_AMOUNT);
 
         for (int i = 0; i < THREAD_AMOUNT; i++) {
             int[] startEndIndexes = startEndGenerate(FILES_AMOUNT, THREAD_AMOUNT, i);
@@ -35,6 +37,11 @@ public class Index {
             }
 
 
+        }
+        List<Integer> Amir = index.get("door");
+        for (Integer I:Amir )
+        {
+            System.out.println(SOURCE_ROOT_FILE.list()[I]);
         }
     }
 }
