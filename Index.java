@@ -3,8 +3,8 @@ import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Index {
-    final static int THREAD_AMOUNT = 20;
-    static final File SOURCE_ROOT_FILE = new File("C:\\Users\\Alex Shpigun\\IdeaProjects\\untitled3");
+    final static int THREAD_AMOUNT = 1;
+    static final File SOURCE_ROOT_FILE = new File("C:\\Users\\Alex Shpigun\\IdeaProjects\\untitled3\\src\\Data");
     static final int FILES_AMOUNT = SOURCE_ROOT_FILE.list().length;
     static final int PORT = 8000;
 
