@@ -1,4 +1,7 @@
 import java.io.File;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,7 +22,7 @@ public class Index {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         ThreadIndex[] indexArr = new ThreadIndex[THREAD_AMOUNT];
         ConcurrentHashMap<String, CopyOnWriteArrayList<Integer>> index = new ConcurrentHashMap<String, CopyOnWriteArrayList<Integer>>(10, 0.75f, THREAD_AMOUNT);
 
@@ -42,6 +45,26 @@ public class Index {
         for (Integer I:Amir )
         {
             System.out.println(SOURCE_ROOT_FILE.list()[I]);
+        }
+        LinkedList<ServerThread> list = new LinkedList<>();
+        ServerSocket server = null;
+
+        try {
+            server = new ServerSocket(PORT);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        try{
+            while (true) {
+                Socket socket = server.accept();
+                ServerThread serverThread = new ServerThread(index, socket, SOURCE_ROOT_FILE);
+                list.add(serverThread);
+                serverThread.start();
+
+            }
+        }finally {
+            server.close();
         }
     }
 }
