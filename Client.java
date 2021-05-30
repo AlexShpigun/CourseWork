@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
 
 public class Client {
@@ -15,6 +13,8 @@ public class Client {
         MassageGetter massageGetter = new MassageGetter(socket);
         massageGetter.start();
 
+        MassageSender massageSender = new MassageSender(socket);
+        massageSender.start();
 
 
     }
@@ -24,6 +24,7 @@ public class Client {
 
 class MassageGetter extends Thread {
     private BufferedReader in;
+
     public MassageGetter(Socket socket) {
         try {
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -31,6 +32,7 @@ class MassageGetter extends Thread {
 
         }
     }
+
     @Override
     public void run() {
         while (true) {
@@ -47,3 +49,30 @@ class MassageGetter extends Thread {
 
     }
 }
+    class MassageSender extends Thread {
+        private BufferedReader inputUser;
+        private BufferedWriter out;
+
+        public MassageSender(Socket socket) {
+            this.inputUser = new BufferedReader(new InputStreamReader(System.in));
+            try {
+                this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            } catch (IOException e) {
+            }
+        }
+        @Override
+        public void run() {
+            while (true) {
+                String clientRequest;
+                try {
+                    clientRequest = inputUser.readLine();
+                    out.write(clientRequest+"\n");
+                    out.flush();
+                } catch (IOException e) {
+                    break;
+                }
+
+            }
+
+        }
+    }
