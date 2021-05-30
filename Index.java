@@ -18,15 +18,24 @@ public class Index {
 
     public static void main(String[] args) {
         ThreadIndex[] indexArr = new ThreadIndex[THREAD_AMOUNT];
-        ConcurrentHashMap<String, LinkedList <Integer>> index = new ConcurrentHashMap<String, LinkedList <Integer>>(10,0.75,THREAD_AMOUNT);
+        ConcurrentHashMap<String, LinkedList<Integer>> index = new ConcurrentHashMap<String, LinkedList<Integer>>(10, 0.75f, THREAD_AMOUNT);
 
         for (int i = 0; i < THREAD_AMOUNT; i++) {
-            int[] startEndIndexes = startEndGenerate(FILES_AMOUNT,THREAD_AMOUNT, i);
-            indexArr[i] = new ThreadIndex(index,startEndIndexes[0],startEndIndexes[1], SOURCE_ROOT_FILE);
+            int[] startEndIndexes = startEndGenerate(FILES_AMOUNT, THREAD_AMOUNT, i);
+            indexArr[i] = new ThreadIndex(index, startEndIndexes[0], startEndIndexes[1], SOURCE_ROOT_FILE);
             indexArr[i].start();
+        }
+        for (int i = 0; i < THREAD_AMOUNT; i++) {
+
+            try {
+                indexArr[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+
+        }
     }
-
-
 }
 
 
