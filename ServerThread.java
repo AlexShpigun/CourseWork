@@ -1,2 +1,9 @@
-public class ServerThread {
+public class ServerThread extends Thread{
+    public ServerThread() {
+
+    }
+
+
+
+
 }
