@@ -1,7 +1,10 @@
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class ThreadIndex extends Thread  {
@@ -17,7 +20,31 @@ public class ThreadIndex extends Thread  {
         this.ROOT = ROOT;
 
 
+    }static private List<String> fileTermsList(File file) throws IOException {
+
+        FileReader fileReader = new FileReader(file);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+        String line = bufferedReader.readLine();
+
+        List<String> terms = new ArrayList<>();
+
+
+        while (line != null) {
+
+           terms.addAll(Stream.of(line.split("[^A-Za-z]+"))
+                   .map(String::toLowerCase)
+                   .distinct()
+                   .collect(Collectors.toList()));
+
+
+
+            line = bufferedReader.readLine();
+
+        }
+        return terms;
     }@Override
+
     public void run(){
 
      }

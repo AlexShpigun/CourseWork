@@ -16,6 +16,7 @@ public class Index {
         return result;
     }
 
+
     public static void main(String[] args) {
         ThreadIndex[] indexArr = new ThreadIndex[THREAD_AMOUNT];
         ConcurrentHashMap<String, LinkedList<Integer>> index = new ConcurrentHashMap<String, LinkedList<Integer>>(10, 0.75f, THREAD_AMOUNT);
