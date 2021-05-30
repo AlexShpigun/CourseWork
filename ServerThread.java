@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.Socket;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -34,7 +35,7 @@ public class ServerThread extends Thread {
                 sendMessage("What do you want,man?");
 
                 request =in.readLine();
-
+                request = request.toLowerCase(Locale.ROOT);
                 if(!index.containsKey(request)) {
                     sendMessage("There's no such thing,boy nex...." + request);
                     sendMessage(" ");
